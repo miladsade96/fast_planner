@@ -49,3 +49,9 @@ async def delete_event(event_id: int) -> dict:
             events.remove(event)
             return {"message": "Event deleted successfully"}
     raise HTTPException(status_code=404, detail="Event not found")
+
+
+@events_router.delete("/")
+async def delete_all_events() -> dict:
+    events.clear()
+    return {"message": "All events deleted successfully"}
