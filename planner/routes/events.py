@@ -31,3 +31,9 @@ async def retrieve_event(event_id: int) -> Event:
         if event.id == event_id:
             return event
     raise HTTPException(status_code=404, detail="Event not found")
+
+
+@events_router.post("/new")
+async def create_event(body: Event = Body(...)) -> dict:
+    events.append(body)
+    return {"message": "Event created successfully"}
