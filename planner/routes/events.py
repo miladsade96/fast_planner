@@ -12,3 +12,11 @@ events_router = APIRouter(tags=["Events"])
 
 # Events list
 events: List[Event] = []
+
+
+@events_router.get("/")
+async def retrieve_all_events() -> List[Event]:
+    """
+        This function will retrieve all events.
+    """
+    return events
