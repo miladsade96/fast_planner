@@ -20,3 +20,17 @@ class User(BaseModel):
                 "events": [],
             }
         }
+
+
+class UserSignIn(BaseModel):
+    email: EmailStr
+    password: str
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "email": "your_email@test.com",
+                "password": "strong!!!",
+                "events": [],
+            }
+        }
