@@ -5,21 +5,21 @@
 from fastapi import APIRouter, HTTPException, Depends, Request, status
 from planner.models.events import Event, EventUpdate
 from planner.database.connection import get_session
+from sqlmodel import select
 from typing import List
 
 
 # Defining event router
 events_router = APIRouter(tags=["Events"])
 
-# Events list
-events: List[Event] = []
 
-
-@events_router.get("/")
-async def retrieve_all_events() -> List[Event]:
+@events_router.get("/", response_model=List[Event])
+async def retrieve_all_events(session=Depends(get_session)) -> List[Event]:
     """
         This function will retrieve all events.
     """
+    statement = select(Event)
+    events = session.exec(statement).all()
     return events
 
 
