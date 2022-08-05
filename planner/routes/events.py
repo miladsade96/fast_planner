@@ -2,8 +2,9 @@
     This file will handle routing operations such as creating, updating, and deleting events.
 """
 
-from fastapi import APIRouter, HTTPException, Body
-from planner.models.events import Event
+from fastapi import APIRouter, HTTPException, Depends, Request, status
+from planner.models.events import Event, EventUpdate
+from planner.database.connection import get_session
 from typing import List
 
 
