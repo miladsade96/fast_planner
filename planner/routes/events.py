@@ -57,15 +57,16 @@ async def update_event(event_id: int, new_data: EventUpdate, session=Depends(get
 
 
 @events_router.delete("/{event_id}")
-async def delete_event(event_id: int) -> dict:
+async def delete_event(event_id: int, session=Depends(get_session)) -> dict:
     """
         This function will delete an event by id.
     """
-    for event in events:
-        if event.id == event_id:
-            events.remove(event)
-            return {"message": "Event deleted successfully"}
-    raise HTTPException(status_code=404, detail="Event not found")
+    event = session.get(Event, event_id)
+    if event:
+        session.delete(event)
+        session.commit()
+        return {"message": "Event deleted successfully"}
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event with supplied id does not exist.")
 
 
 @events_router.delete("/")
