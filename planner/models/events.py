@@ -7,27 +7,29 @@ from sqlmodel import SQLModel, Field, Column, JSON
 
 
 class Event(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: int = Field(default=None, primary_key=True)
     title: str
     image: str
     description: str
-    location: str
     tags: List[str] = Field(sa_column=Column(JSON))
+    location: str
 
     class Config:
         arbitrary_types_allowed = True
+
         schema_extra = {
             "example": {
-                "title": "Event Title",
-                "image": "https://image.com/image.png",
-                "description": "Event Description",
-                "tags": ["tag1", "tag2"],
-                "location": "Event Location"
+                "title": "FastAPI BookLaunch",
+                "image": "https://linktomyimage.com/image.png",
+                "description": "We will be discussing the contents of the FastAPI book in this event."
+                               "Ensure to come with your own copy to win gifts!",
+                "tags": ["python", "fastapi", "book", "launch"],
+                "location": "Google Meet"
             }
         }
 
 
-class EventUpdate(SQLModel, table=True):
+class EventUpdate(SQLModel):
     title: Optional[str]
     image: Optional[str]
     description: Optional[str]
@@ -37,10 +39,11 @@ class EventUpdate(SQLModel, table=True):
     class Config:
         schema_extra = {
             "example": {
-                "title": "Event Title",
-                "image": "https://image.com/image.png",
-                "description": "Event Description",
-                "tags": ["tag1", "tag2"],
-                "location": "Event Location"
+                "title": "FastAPI BookLaunch",
+                "image": "https://linktomyimage.com/image.png",
+                "description": "We will be discussing the contents of the FastAPI book in this event."
+                               "Ensure to come with your own copy to win gifts!",
+                "tags": ["python", "fastapi", "book", "launch"],
+                "location": "Google Meet"
             }
         }
