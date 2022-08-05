@@ -42,6 +42,20 @@ async def create_event(new_event: Event, session=Depends(get_session)) -> dict:
     return {"message": "Event created successfully"}
 
 
+@events_router.put("/edit/{event_id}", response_model=Event)
+async def update_event(event_id: int, new_data: EventUpdate, session=Depends(get_session)) -> Event:
+    event = session.get(Event, event_id)
+    if event:
+        event_data = new_data.dict(exclude_unset=True)
+        for key, value in event_data.items():
+            setattr(event, key, value)
+        session.add(event)
+        session.commit()
+        session.refresh(event)
+        return event
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event with supplied id does not exist.")
+
+
 @events_router.delete("/{event_id}")
 async def delete_event(event_id: int) -> dict:
     """
