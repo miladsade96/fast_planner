@@ -25,3 +25,22 @@ class Event(SQLModel, table=True):
                 "location": "Event Location"
             }
         }
+
+
+class EventUpdate(SQLModel, table=True):
+    title: Optional[str]
+    image: Optional[str]
+    description: Optional[str]
+    tags: Optional[List[str]]
+    location: Optional[str]
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "title": "Event Title",
+                "image": "https://image.com/image.png",
+                "description": "Event Description",
+                "tags": ["tag1", "tag2"],
+                "location": "Event Location"
+            }
+        }
