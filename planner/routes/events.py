@@ -70,6 +70,10 @@ async def delete_event(event_id: int, session=Depends(get_session)) -> dict:
 
 
 @events_router.delete("/")
-async def delete_all_events() -> dict:
-    events.clear()
+async def delete_all_events(session=Depends(get_session)) -> dict:
+    """
+    This function will delete all events.
+    """
+    session.query(Event).delete()
+    session.commit()
     return {"message": "All events deleted successfully"}
