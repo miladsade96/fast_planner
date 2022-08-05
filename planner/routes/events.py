@@ -23,15 +23,15 @@ async def retrieve_all_events(session=Depends(get_session)) -> List[Event]:
     return events
 
 
-@events_router.get("/{event_id}")
-async def retrieve_event(event_id: int) -> Event:
+@events_router.get("/{event_id}", response_model=Event)
+async def retrieve_event(event_id: int, session=Depends(get_session)) -> Event:
     """
         This function will retrieve an event by id.
     """
-    for event in events:
-        if event.id == event_id:
-            return event
-    raise HTTPException(status_code=404, detail="Event not found")
+    event = session.get(Event, event_id)
+    if event:
+        return event
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event with supplied id does not exist.")
 
 
 @events_router.post("/new")
