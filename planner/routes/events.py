@@ -35,8 +35,10 @@ async def retrieve_event(event_id: int) -> Event:
 
 
 @events_router.post("/new")
-async def create_event(body: Event = Body(...)) -> dict:
-    events.append(body)
+async def create_event(new_event: Event, session=Depends(get_session)) -> dict:
+    session.add(new_event)
+    session.commit()
+    session.refresh(new_event)
     return {"message": "Event created successfully"}
 
 
