@@ -54,15 +54,14 @@ async def update_event(event_id: PydanticObjectId, body: EventUpdate) -> Event:
 
 
 @events_router.delete("/{event_id}")
-async def delete_event(event_id: int) -> dict:
+async def delete_event(event_id: PydanticObjectId) -> dict:
     """
         This function will delete an event by id.
     """
-    for event in events:
-        if event.id == event_id:
-            events.remove(event)
-            return {"message": "Event deleted successfully"}
-    raise HTTPException(status_code=404, detail="Event not found")
+    event = await event_database.delete(event_id)
+    if not event:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event not found")
+    return {"message": "Event deleted successfully"}
 
 
 @events_router.delete("/")
