@@ -2,15 +2,14 @@
     This file will contain the model definition for events operations.
 """
 
-from pydantic import BaseModel
-from typing import List
+from beanie import Document
+from typing import List, Optional
 
 
-class Event(BaseModel):
+class Event(Document):
     """
     This class will contain the model definition for events operations.
     """
-    id: int
     title: str
     image: str
     description: str
@@ -20,7 +19,6 @@ class Event(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "id": 1,
                 "title": "Event Title",
                 "image": "https://image.com/image.jpg",
                 "description": "Event Description",
@@ -28,3 +26,6 @@ class Event(BaseModel):
                 "location": "Event Location"
             }
         }
+
+    class Settings:
+        name = "events"
