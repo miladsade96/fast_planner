@@ -4,7 +4,7 @@
 from beanie import PydanticObjectId
 from fastapi import APIRouter, HTTPException, status
 from planner.database.connection import Database
-from planner.models.events import Event
+from planner.models.events import Event, EventUpdate
 from typing import List
 
 
@@ -40,6 +40,17 @@ async def retrieve_event(event_id: PydanticObjectId) -> Event:
 async def create_event(body: Event) -> dict:
     await event_database.save(body)
     return {"message": "Event created successfully"}
+
+
+@events_router.put("/{event_id}", response_model=Event)
+async def update_event(event_id: PydanticObjectId, body: EventUpdate) -> Event:
+    """
+        This function will update an event.
+    """
+    updated_event = await event_database.update(event_id, body)
+    if not updated_event:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event not found")
+    return updated_event
 
 
 @events_router.delete("/{event_id}")
