@@ -2,10 +2,13 @@
     This file is the main file of the planner.
 """
 
-from fastapi import FastAPI
-from planner.routes.users import user_router
-from planner.routes.events import events_router
 import uvicorn
+from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
+from database.connection import Settings
+from planner.routes.events import events_router
+from planner.routes.users import user_router
+
 
 app = FastAPI()
 
