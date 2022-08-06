@@ -37,8 +37,8 @@ async def retrieve_event(event_id: PydanticObjectId) -> Event:
 
 
 @events_router.post("/new")
-async def create_event(body: Event = Body(...)) -> dict:
-    events.append(body)
+async def create_event(body: Event) -> dict:
+    await event_database.save(body)
     return {"message": "Event created successfully"}
 
 
