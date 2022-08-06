@@ -25,15 +25,15 @@ async def retrieve_all_events() -> List[Event]:
     return events
 
 
-@events_router.get("/{event_id}")
-async def retrieve_event(event_id: int) -> Event:
+@events_router.get("/{event_id}", response_model=Event)
+async def retrieve_event(event_id: PydanticObjectId) -> Event:
     """
         This function will retrieve an event by id.
     """
-    for event in events:
-        if event.id == event_id:
-            return event
-    raise HTTPException(status_code=404, detail="Event not found")
+    event = await event_database.get(event_id)
+    if not event:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event not found")
+    return event
 
 
 @events_router.post("/new")
