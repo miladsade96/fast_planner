@@ -12,15 +12,16 @@ from typing import List
 # Defining event router
 events_router = APIRouter(tags=["Events"])
 
-# Events list
-events: List[Event] = []
+
+event_database = Database(Event)
 
 
-@events_router.get("/")
+@events_router.get("/", response_model=List[Event])
 async def retrieve_all_events() -> List[Event]:
     """
         This function will retrieve all events.
     """
+    events = await event_database.get_all()
     return events
 
 
