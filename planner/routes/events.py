@@ -66,5 +66,8 @@ async def delete_event(event_id: PydanticObjectId) -> dict:
 
 @events_router.delete("/")
 async def delete_all_events() -> dict:
-    events.clear()
+    """
+        This function will delete all events.
+    """
+    await event_database.delete_all()
     return {"message": "All events deleted successfully"}
