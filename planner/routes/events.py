@@ -1,10 +1,12 @@
 """
     This file will handle routing operations such as creating, updating, and deleting events.
 """
-
-from fastapi import APIRouter, HTTPException, Body
+from beanie import PydanticObjectId
+from fastapi import APIRouter, HTTPException, status
+from planner.database.connection import Database
 from planner.models.events import Event
 from typing import List
+
 
 
 # Defining event router
