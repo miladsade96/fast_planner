@@ -4,7 +4,7 @@
 
 from beanie import init_beanie, PydanticObjectId
 from motor.motor_asyncio import AsyncIOMotorClient
-from typing import Optional, Any, List
+from typing import Any, List
 from pydantic import BaseSettings, BaseModel
 from planner.models.users import User
 from planner.models.events import Event
@@ -27,7 +27,8 @@ class Database:
     def __init__(self, model):
         self.model = model
 
-    async def save(self, document) -> None:
+    @staticmethod
+    async def save(document) -> None:
         """
             This method will save the document to the database.
         """
@@ -57,8 +58,8 @@ class Database:
         """
         doc_id = id
         des_body = body.dict()
-        des_body = {k:v for k, v in des_body.items() if v is not None}
-        update_query = {'$set':{
+        des_body = {k: v for k, v in des_body.items() if v is not None}
+        update_query = {'$set': {
             field: value for field, value in des_body.items()
         }}
         doc = await self.get(doc_id)
