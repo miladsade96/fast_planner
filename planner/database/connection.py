@@ -80,3 +80,14 @@ class Database:
             return False
         await doc.delete()
         return True
+
+    async def delete_all(self) -> bool:
+        """
+            This method will delete all the documents from the database.
+        """
+        docs = await self.get_all()
+        if not docs:
+            return False
+        for doc in docs:
+            await doc.delete()
+        return True
