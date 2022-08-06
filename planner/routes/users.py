@@ -10,23 +10,17 @@ from planner.models.users import UserSignIn, User
 # Defining a router for the users endpoint
 user_router = APIRouter(tags=["User"])
 
-# Create users
-users = {}
+user_database = Database(User)
 
 
 @user_router.post("/signup")
-async def sign_user_up(data: User) -> dict:
-    if data.email in users:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="User with supplied username exists"
-        )
-
-    users[data.email] = data
-
-    return {
-        "message": "User successfully registered!"
-    }
+async def sign_user_up(user: User) -> dict:
+    user_exist = await user.find_one(User.email == user.email)
+    if user_exist:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="User already exists")
+    else:
+        await user_database.save(user)
+        return {"message": "User created successfully"}
 
 
 @user_router.post("/signin")
