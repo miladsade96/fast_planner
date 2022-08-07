@@ -31,9 +31,10 @@ class UserSignIn(BaseModel):
     email: EmailStr
     password: str
 
-    schema_extra = {
-        "example": {
-            "email": "name@host.com",
-            "password": "strong!!!"
+    class Config:
+        schema_extra = {
+            "example": {
+                "email": "name@host.com",
+                "password": "strong!!!"
+            }
         }
-    }
