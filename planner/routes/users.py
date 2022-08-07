@@ -3,7 +3,6 @@
 """
 
 from fastapi import APIRouter, HTTPException, status
-from planner.models.users import User, UserSignIn
 from planner.database.connection import Database
 from planner.models.users import UserSignIn, User
 
