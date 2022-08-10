@@ -4,7 +4,7 @@
 
 from beanie import init_beanie, PydanticObjectId
 from motor.motor_asyncio import AsyncIOMotorClient
-from typing import Any, List
+from typing import Any, List, Optional
 from pydantic import BaseSettings, BaseModel
 from planner.models.users import User
 from planner.models.events import Event
@@ -14,6 +14,8 @@ class Settings(BaseSettings):
     """
         This class will handle the configurations for the database.
     """
+    SECRET_KEY: Optional[str] = None
+
     @staticmethod
     async def initialize_database():
         """
