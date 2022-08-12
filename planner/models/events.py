@@ -10,6 +10,7 @@ class Event(Document):
     """
     This class will contain the model definition for events operations.
     """
+    creator: Optional[str]
     title: str
     image: str
     description: str
