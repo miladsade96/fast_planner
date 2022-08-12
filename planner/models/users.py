@@ -39,10 +39,7 @@ class User(Document):
 #             }
 #         }
 
-    class Config:
-        schema_extra = {
-            "example": {
-                "email": "name@host.com",
-                "password": "strong!!!"
-            }
-        }
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
