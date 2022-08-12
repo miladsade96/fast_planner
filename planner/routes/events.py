@@ -65,7 +65,12 @@ async def delete_event(event_id: PydanticObjectId, user: str = Depends(authentic
     """
         This function will delete an event by id.
     """
-    event = await event_database.delete(event_id)
+    event = await event_database.get(event_id)
     if not event:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event not found")
-    return {"message": "Event deleted successfully"}
+    elif event.creator != user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="You do not have permission to delete this event")
+    else:
+        await event_database.delete(event_id)
+        return {"message": "Event deleted successfully"}
