@@ -2,10 +2,11 @@
     This file will handle routing operations such as creating, updating, and deleting events.
 """
 from beanie import PydanticObjectId
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
 from planner.database.connection import Database
 from planner.models.events import Event, EventUpdate
 from typing import List
+from planner.auth.authenticate import authenticate
 
 
 
@@ -37,13 +38,14 @@ async def retrieve_event(event_id: PydanticObjectId) -> Event:
 
 
 @events_router.post("/new")
-async def create_event(body: Event) -> dict:
+async def create_event(body: Event, user: str = Depends(authenticate)) -> dict:
+    body.creator = user
     await event_database.save(body)
     return {"message": "Event created successfully"}
 
 
 @events_router.put("/{event_id}", response_model=Event)
-async def update_event(event_id: PydanticObjectId, body: EventUpdate) -> Event:
+async def update_event(event_id: PydanticObjectId, body: EventUpdate, user: str = Depends(authenticate)) -> Event:
     """
         This function will update an event.
     """
@@ -54,7 +56,7 @@ async def update_event(event_id: PydanticObjectId, body: EventUpdate) -> Event:
 
 
 @events_router.delete("/{event_id}")
-async def delete_event(event_id: PydanticObjectId) -> dict:
+async def delete_event(event_id: PydanticObjectId, user: str = Depends(authenticate)) -> dict:
     """
         This function will delete an event by id.
     """
@@ -65,7 +67,7 @@ async def delete_event(event_id: PydanticObjectId) -> dict:
 
 
 @events_router.delete("/")
-async def delete_all_events() -> dict:
+async def delete_all_events(user: str = Depends(authenticate)) -> dict:
     """
         This function will delete all events.
     """
