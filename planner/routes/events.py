@@ -69,12 +69,3 @@ async def delete_event(event_id: PydanticObjectId, user: str = Depends(authentic
     if not event:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event not found")
     return {"message": "Event deleted successfully"}
-
-
-@events_router.delete("/")
-async def delete_all_events(user: str = Depends(authenticate)) -> dict:
-    """
-        This function will delete all events.
-    """
-    await event_database.delete_all()
-    return {"message": "All events deleted successfully"}
