@@ -4,6 +4,7 @@
 
 from beanie import Document
 from typing import List, Optional
+from pydantic import BaseModel
 
 
 class Event(Document):
@@ -32,7 +33,7 @@ class Event(Document):
         name = "events"
 
 
-class EventUpdate(Document):
+class EventUpdate(BaseModel):
     """
     This class will contain the model definition for events operations.
     """
