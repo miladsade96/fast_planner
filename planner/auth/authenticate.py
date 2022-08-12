@@ -8,7 +8,7 @@ from fastapi import HTTPException, Depends, status
 from planner.auth.jwt_handler import verify_access_token
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/signin")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/signin")
 
 
 async def authenticate(token: str = Depends(oauth2_scheme)) -> str:
