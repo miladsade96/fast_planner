@@ -8,6 +8,7 @@ from fastapi.responses import RedirectResponse
 from database.connection import Settings
 from planner.routes.events import events_router
 from planner.routes.users import user_router
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
@@ -17,6 +18,16 @@ settings = Settings()
 # Register routes
 app.include_router(user_router, prefix="/user")
 app.include_router(events_router, prefix="/event")
+
+# Registering origins
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.on_event("startup")
