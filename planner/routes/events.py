@@ -49,9 +49,14 @@ async def update_event(event_id: PydanticObjectId, body: EventUpdate, user: str 
     """
         This function will update an event.
     """
+    event = await event_database.get(event_id)
+    if event.creator != user:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="You do not have permission to update this event")
     updated_event = await event_database.update(event_id, body)
     if not updated_event:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="Event with supplied ID does not exist")
     return updated_event
 
 
