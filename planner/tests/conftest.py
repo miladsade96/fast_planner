@@ -10,3 +10,11 @@ from planner.main import app
 from planner.models.users import User
 from planner.models.events import Event
 from planner.database.connection import Settings
+
+
+@pytest.fixture(scope="session")
+def event_loop():
+    """Event loop session fixture"""
+    loop = asyncio.get_event_loop()
+    yield loop
+    loop.close()
