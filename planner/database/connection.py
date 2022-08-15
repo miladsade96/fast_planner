@@ -14,17 +14,19 @@ class Settings(BaseSettings):
     """
         This class will handle the configurations for the database.
     """
+    DATABASE_URL: Optional[str] = None
     SECRET_KEY: Optional[str] = None
 
     class Config:
         env_file = ".env"
 
-    @staticmethod
-    async def initialize_database():
+
+    async def initialize_database(self):
         """
             This method will initialize the database.
         """
-        client = AsyncIOMotorClient("mongodb://localhost:27017/planner")
+        # client = AsyncIOMotorClient("mongodb://localhost:27017/planner")
+        client = AsyncIOMotorClient(self.DATABASE_URL)
         await init_beanie(database=client.get_default_database(), document_models=[Event, User])
 
 
