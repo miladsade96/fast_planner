@@ -5,7 +5,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
-from database.connection import Settings
+from planner.database.connection import Settings
 from planner.routes.events import events_router
 from planner.routes.users import user_router
 from fastapi.middleware.cors import CORSMiddleware

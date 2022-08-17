@@ -24,6 +24,7 @@ async def init_db():
     """Initialize new database instance"""
     test_settings = Settings()
     test_settings.DATABASE_URL = "mongodb://localhost:27017/testdb"
+    test_settings.SECRET_KEY = "HI5HL3V3L$3CR3T"
     await test_settings.initialize_database()
 
 
