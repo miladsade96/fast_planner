@@ -16,3 +16,17 @@ async def access_token():
     :return: access token
     """
     return create_access_token("testuser@test.com")
+
+
+@pytest.fixture(scope="module")
+async def mock_event() -> Event:
+    new_event = Event(
+        creator="testuser@test.com",
+        title="Mock Event",
+        image="https://image.com/image.jpg",
+        description="Mock Event Description",
+        tags=["tag1", "tag2"],
+        location="Mock Event Location"
+    )
+    await Event.insert_one(new_event)
+    yield new_event
