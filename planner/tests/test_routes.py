@@ -46,3 +46,22 @@ async def test_get_event(default_client: httpx.AsyncClient, mock_event: Event) -
     assert response.status_code == 200
     assert response.json()["creator"] == mock_event.creator
     assert response.json()["_id"] == str(mock_event.id)
+
+
+@pytest.mark.asyncio
+async def test_create_event(default_client: httpx.AsyncClient, access_token: str) -> None:
+    payload = {
+        "title": "New Event",
+        "image": "https://image.com/image.jpg",
+        "description": "New Event Description",
+        "tags": ["new", "event"],
+        "location": "New Event Location"
+    }
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json"
+    }
+    test_response = {"message": "Event created successfully"}
+    response = await default_client.post("/event/new", headers=headers, json=payload)
+    assert response.status_code == 200
+    assert response.json() == test_response
