@@ -101,3 +101,11 @@ async def test_event_delete(default_client: httpx.AsyncClient, mock_event: Event
     response = await default_client.delete(url, headers=headers)
     assert response.status_code == 200
     assert response.json() == test_response
+
+
+@pytest.mark.asyncio
+async def test_event_delete_not_found(default_client: httpx.AsyncClient, mock_event: Event) -> None:
+    url = f"/event/{str(mock_event.id)}"
+    response = await default_client.get(url)
+    assert response.status_code == 404
+    assert response.json()["message"] == "Event not found"
