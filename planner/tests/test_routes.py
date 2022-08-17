@@ -37,3 +37,12 @@ async def test_get_events(default_client: httpx.AsyncClient, mock_event: Event) 
     response = await default_client.get("/event/")
     assert response.status_code == 200
     assert response.json()[0]["_id"] == str(mock_event.id)
+
+
+@pytest.mark.asyncio
+async def test_get_event(default_client: httpx.AsyncClient, mock_event: Event) -> None:
+    url = f"/event/{str(mock_event.id)}"
+    response = await default_client.get(url)
+    assert response.status_code == 200
+    assert response.json()["creator"] == mock_event.creator
+    assert response.json()["_id"] == str(mock_event.id)
