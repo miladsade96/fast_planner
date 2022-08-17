@@ -30,3 +30,10 @@ async def mock_event() -> Event:
     )
     await Event.insert_one(new_event)
     yield new_event
+
+
+@pytest.mark.asyncio
+async def test_get_events(default_client: httpx.AsyncClient, mock_event: Event) -> None:
+    response = await default_client.get("/event/")
+    assert response.status_code == 200
+    assert response.json()[0]["_id"] == str(mock_event.id)
