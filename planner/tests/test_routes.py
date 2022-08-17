@@ -73,3 +73,18 @@ async def test_get_events_count(default_client: httpx.AsyncClient, mock_event: E
     events = response.json()
     assert response.status_code == 200
     assert len(events) == 2
+
+
+@pytest.mark.asyncio
+async def test_event_update(default_client: httpx.AsyncClient, mock_event: Event, access_token: str) -> None:
+    test_payload = {
+        "title": "Updated Event",
+    }
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json"
+    }
+    url = f"/event/{str(mock_event.id)}"
+    response = await default_client.put(url, headers=headers, json=test_payload)
+    assert response.status_code == 200
+    assert response.json()["title"] == test_payload["title"]
